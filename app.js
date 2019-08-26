@@ -1,10 +1,18 @@
 'use strict';
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', (request, response) => {
   response.status(200).send('Hello, local world!');
+});
+
+app.post('/locations', (request, response) => {
+    response.status(200).send(JSON.stringify(request.body));
 });
 
 if (module === require.main) {
