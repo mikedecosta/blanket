@@ -18,11 +18,6 @@ app.get('/', (request, response) => {
 });
 
 app.post('/locations', (request, response) => {
-    const geocodedLocations = {
-        accepted: [],
-        rejected: []
-    };
-
     if(!request.body.locations || request.body.locations.size <= 0) {
         throw new Error('request requires "locations" array not to be empty');
     }
@@ -56,22 +51,6 @@ app.post('/locations', (request, response) => {
         }
         response.end(JSON.stringify(apiResults));
     });
-//    await request.body.locations.forEach(
-//        function(value, index, listObj) {
-//            geocoder.geocode(value)
-//            .then(function (result) {
-//                geocodedLocations.accepted.push(result);
-//                console.log("DEBUG 31");
-//                console.log(result);
-//            })
-//            .catch(function (err) {
-//                geocodedLocations.rejected.push(value);
-//                console.log("DEBUG 36");
-//                console.log(err);
-//            });
-//        }
-//    );
-//    response.end(JSON.stringify(geocodedLocations));
 });
 
 function calculateDistance(locationA, locationB, unit) {
