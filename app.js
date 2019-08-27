@@ -2,12 +2,13 @@
 
 const express = require('express');
 const geocoder = require('./geocoder');
+const GITHUB_URL = 'https://github.com/mikedecosta/blanket';
 
 const app = express();
 app.use(express.json());
 
 app.get('/', (request, response) => {
-  response.status(200).send('Hello, local world!');
+  response.redirect(GITHUB_URL);
 });
 
 app.post('/locations', (request, response) => {
