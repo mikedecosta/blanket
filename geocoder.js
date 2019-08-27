@@ -27,12 +27,12 @@ module.exports.getClosestPoint = function (target, locations) {
     let closestPoint;
     let closestPointDistance;
     for(let i=0;i<locations.length;i++) {
-        let loc = locations[i];
+        const loc = locations[i];
         if (loc.value[0].formattedAddress === target.value[0].formattedAddress) {
             continue;
         }
 
-        let distance = calculateDistance(target.value[0], loc.value[0], DISTANCE_UNIT);
+        const distance = calculateDistance(target.value[0], loc.value[0], DISTANCE_UNIT);
         if(!closestPoint || distance < closestPointDistance) {
             closestPoint = loc;
             closestPointDistance = distance;
