@@ -18,25 +18,16 @@ app.post('/locations', (request, response) => {
     geocoder.batchGeocode(request.body.locations).then(function(geocodedLocations) {
         const usableLocations = geocodedLocations.filter(geocoder.isAddressGeocoded);
 
-        const apiResults = {
-            accepted: [],
-            rejected: geocodedLocations.length - usableLocations.length
-        };
-
-        for(let i=0;i<usableLocations.length;i++) {
-            let target = usableLocations[i];
-            let { closestPoint, distance } = geocoder.getClosestPoint(target, usableLocations);
-            if(!closestPoint) {
-                throw new Error(`No closest point detected for ${target.value[0].formattedAddress}`);
-            }
-
-            apiResults.accepted.push({
-                'target': target.value[0].formattedAddress,
-                'closestPoint': closestPoint.value[0].formattedAddress,
+        const accepted = usableLocations.map(loc => {
+            const { closestPoint, distance } = geocoder.getClosestPoint(loc, usableLocations);
+            return {
+                target: loc.value[0].formattedAddress,
+                closestPoint: closestPoint.value[0].formattedAddress,
                 distance
-            });
-        }
-        response.end(JSON.stringify(apiResults));
+            };
+        });
+
+        response.end(JSON.stringify({accepted, rejected: geocodedLocations.length - usableLocations.length}));
     });
 });
 
