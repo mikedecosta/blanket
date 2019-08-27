@@ -28,7 +28,7 @@ module.exports.getClosestPoint = function (target, locations) {
     let closestPointDistance;
     for(let i=0;i<locations.length;i++) {
         let loc = locations[i];
-        if (loc.error || loc.value[0].formattedAddress === target.value[0].formattedAddress) {
+        if (loc.value[0].formattedAddress === target.value[0].formattedAddress) {
             continue;
         }
 
@@ -43,6 +43,10 @@ module.exports.getClosestPoint = function (target, locations) {
         'closestPoint': closestPoint, 
         'distance': Math.round(closestPointDistance) + " " + DISTANCE_UNIT
     };
+}
+
+module.exports.isAddressGeocoded = function(address) {
+    return !address.error && address.value && address.value.length
 }
 
 function calculateDistance(locationA, locationB, unit) {

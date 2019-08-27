@@ -11,27 +11,23 @@ app.get('/', (request, response) => {
 });
 
 app.post('/locations', (request, response) => {
-    if(!request.body.locations || request.body.locations.size <= 0) {
-        throw new Error('request requires "locations" array not to be empty');
+    if(!request.body.locations || request.body.locations.length < 2) {
+        return response.status(400).send('`locations` endpoint requires `locations` data array size to be greater than 1');
     }
 
     geocoder.batchGeocode(request.body.locations).then(function(geocodedLocations) {
+        const usableLocations = geocodedLocations.filter(geocoder.isAddressGeocoded);
 
         const apiResults = {
             accepted: [],
-            rejected: []
+            rejected: geocodedLocations.length - usableLocations.length
         };
-        for(let i=0;i<geocodedLocations.length;i++) {
-            let target = geocodedLocations[i];
-            if(target.error) {
-                apiResults.rejected.push(target);
-                continue;
-            }
 
-            let { closestPoint, distance } = geocoder.getClosestPoint(target, geocodedLocations);
+        for(let i=0;i<usableLocations.length;i++) {
+            let target = usableLocations[i];
+            let { closestPoint, distance } = geocoder.getClosestPoint(target, usableLocations);
             if(!closestPoint) {
-                apiResults.rejected.push(target.value[0].formattedAddress);
-                continue;
+                throw new Error(`No closest point detected for ${target.value[0].formattedAddress}`);
             }
 
             apiResults.accepted.push({
