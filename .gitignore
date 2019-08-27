@@ -2,3 +2,7 @@
 /node_modules
 
 app-config.js
+
+# vim temp files
+*.swp
+*.swo
