@@ -65,7 +65,7 @@ Things to add to make this better:
 * Deduping of input and output (if 2 locations have each other as closest points, just show it 1 time)
 * ~~Not looking through every single combination, store them in a lat/long order and do early cut off~~ This is an unnecessary optimization for calls of 100's of addresses at a time. The bottleneck is the geocoding, not finding closest points. With larger datasets, this could be looked at again.
 * Clean up of application files and split into multiple app files for encapsulation of concerns (routes, geocoding-utils, ui, etc)
-* Limits for our API key
+* Require auth to give API access and restrict usage of the API to protect against abuse
 * Ability to set other geocoding strategy besides Google
 * cache or datastore backend to store commonly used addresses to not have to geocode them everytime
 * Allow changing unit from "miles" to "km"
