@@ -9,7 +9,7 @@ Make a POST request to `https://blanket-251017.appspot.com/locations`
 * The object structure within the `accepted` array will have the `target` location in question, the `closestPoint` to that target, and the `distance` in miles
 * the `rejected` int represents the number of locations that could not be geocoded for what ever reason
 
-Here is an example:
+## Example
 ```
 curl https://blanket-251017.appspot.com/locations -d '{"locations": ["Statue of Liberty", "Hershey State Park", "Empire State Building", "8 Island Hill Ave. Malden, MA, 02148", "Port Authority Bus Terminal", "69 Hill st, Malden, MA, 02149", "167 Chatham Road, Harwich, MA, 02645", "141 Tremont St, Boston, MA, 02114"]}' -H "Content-Type: application/json" | jq
 {
@@ -59,12 +59,12 @@ curl https://blanket-251017.appspot.com/locations -d '{"locations": ["Statue of 
 }
 ```
 
-Things to add to make this better:
+## Improvements
 * UI form to call this and view results from the web
 * Async response that returns an ID to the result set that you can view later
 * Deduping of input and output (if 2 locations have each other as closest points, just show it 1 time)
 * ~~Not looking through every single combination, store them in a lat/long order and do early cut off~~ This is an unnecessary optimization for calls of 100's of addresses at a time. The bottleneck is the geocoding, not finding closest points. With larger datasets, this could be looked at again.
-* Clean up of application files and split into multiple app files for encapsulation of concerns (routes, geocoding-utils, ui, etc)
+* Clean up of application files and split into multiple app files for encapsulation of concerns (routes, geocoding-utils, ui, etc) *This was done to some degree but could be better*
 * Require auth to give API access and restrict usage of the API to protect against abuse
 * Ability to set other geocoding strategy besides Google
 * cache or datastore backend to store commonly used addresses to not have to geocode them everytime
