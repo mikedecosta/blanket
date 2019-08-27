@@ -64,7 +64,7 @@ function calculateDistance(locationA, locationB, unit) {
     distance = distance * 180/Math.PI;
     distance = distance * 60 * 1.1515;
 
-    if (unit=="km") { distance = dist * 1.609344 }
+    if (unit==="km") { distance = dist * 1.609344 }
 
     return distance;
 }
