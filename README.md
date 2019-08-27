@@ -4,7 +4,10 @@
 Make a POST request to `https://blanket-251017.appspot.com/locations`
 * The content type should be `application/json`
 * The data provided should be a json object with this structure: `{"locations": ["location 1", "location 2"]}`
-* The API will return an object with an `accepted` array of points and the closest other point with the distance between them in miles, and a `rejected` array of locations that we couldn't geocode for what ever reason.
+* The locations array needs to have at least 2 elements
+* The API will return an object with the following structure `{accepted: [Object object, Object object...], rejected: int}`
+* The object structure within the `accepted` array will have the `target` location in question, the `closestPoint` to that target, and the `distance` in miles
+* the `rejected` int represents the number of locations that could not be geocoded for what ever reason
 
 Here is an example:
 ```
@@ -52,7 +55,7 @@ curl https://blanket-251017.appspot.com/locations -d '{"locations": ["Statue of 
       "distance": "6 miles"
     }
   ],
-  "rejected": []
+  "rejected": 0
 }
 ```
 
@@ -60,8 +63,9 @@ Things to add to make this better:
 * UI form to call this and view results from the web
 * Async response that returns an ID to the result set that you can view later
 * Deduping of input and output (if 2 locations have each other as closest points, just show it 1 time)
-* Not looking through every single combination, store them in a lat/long order and do early cut off
+* ~~Not looking through every single combination, store them in a lat/long order and do early cut off~~ This is an unnecessary optimization for calls of 100's of addresses at a time. The bottleneck is the geocoding, not finding closest points. With larger datasets, this could be looked at again.
 * Clean up of application files and split into multiple app files for encapsulation of concerns (routes, geocoding-utils, ui, etc)
 * Limits for our API key
+* Ability to set other geocoding strategy besides Google
 * cache or datastore backend to store commonly used addresses to not have to geocode them everytime
 * Allow changing unit from "miles" to "km"
