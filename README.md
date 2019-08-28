@@ -58,6 +58,13 @@ curl https://blanket-251017.appspot.com/locations -d '{"locations": ["Statue of 
   "rejected": 0
 }
 ```
+## Running Locally
+
+* Clone this repo: `git clone git@github.com:mikedecosta/blanket.git`
+* Inside that repo, add a js file `app-config.js` with this line: `exports.GOOGLE_API_KEY = '<YOUR GOOGLE API KEY>';`
+* run npm install with desired port exported `export PORT=8080 && npm install`
+* Start npm `npm start`
+* Then start making calls against the API, or visit `localhost:8080` to be redirected here. `curl http://localhost:8080/locations -H "Content-Type: application/json" -d '{"locations": ["Statue of Liberty", "Times Square"]}' | jq`
 
 ## Improvements
 * UI form to call this and view results from the web
