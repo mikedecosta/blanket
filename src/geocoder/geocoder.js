@@ -3,7 +3,7 @@
 const APPCONFIG = require('./../../app-config');
 const nodeGeocoder = require('node-geocoder');
 
-const DISTANCE_UNIT = "miles";
+const DISTANCE_UNIT = 'miles';
 const geocoder = nodeGeocoder({
     provider: 'google',
     apiKey: APPCONFIG.GOOGLE_API_KEY
@@ -40,12 +40,19 @@ module.exports.getClosestPoint = function (target, locations) {
 
     return { 
         'closestPoint': closestPoint, 
-        'distance': Math.round(closestPointDistance) + " " + DISTANCE_UNIT
+        'distance': Math.round(closestPointDistance) + ' ' + DISTANCE_UNIT
     };
 }
 
 module.exports.isAddressGeocoded = function(address) {
-    return !address.error && address.value && address.value.length
+    return !address.error &&
+            address.hasOwnProperty('value') &&
+            Array.isArray(address.value) &&
+            address.value.length &&
+            address.value[0].hasOwnProperty('formattedAddress') &&
+            address.value[0].formattedAddress.length &&
+            address.value[0].hasOwnProperty('latitude') &&
+            address.value[0].hasOwnProperty('longitude')
 }
 
 function calculateDistance(locationA, locationB, unit) {
@@ -63,7 +70,7 @@ function calculateDistance(locationA, locationB, unit) {
     distance = distance * 180/Math.PI;
     distance = distance * 60 * 1.1515;
 
-    if (unit==="km") { distance = dist * 1.609344 }
+    if (unit==='km') { distance = dist * 1.609344 }
 
     return distance;
 }
