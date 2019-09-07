@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const geocoder = require('./geocoder');
+const geocoder = require('./geocoder/geocoder');
 const GITHUB_URL = 'https://github.com/mikedecosta/blanket';
 
 const app = express();

@@ -1,6 +1,6 @@
 'use strict';
 
-const APPCONFIG = require('./app-config');
+const APPCONFIG = require('./../../app-config');
 const nodeGeocoder = require('node-geocoder');
 
 const DISTANCE_UNIT = "miles";
@@ -14,7 +14,6 @@ module.exports.batchGeocode = function (locations) {
         if(error) {
             throw new Error('Request Error: ', error);
         }
-
         return results;
     });
 }
