@@ -2,6 +2,7 @@
 
 const express = require('express');
 const geocoder = require('./geocoder/geocoder');
+const locationResultSet = require('./firestore/locationResultSet');
 const GITHUB_URL = 'https://github.com/mikedecosta/blanket';
 
 const app = express();
@@ -11,24 +12,34 @@ app.get('/', (request, response) => {
   response.redirect(GITHUB_URL);
 });
 
+app.get('/locationResultSet/:resultSetId', (request, response) => {
+    const id = request.params.resultSetId;
+    if(!id) {
+        return response(400).send('`locationResultSet` endpoint requires a `resultSetId` param');
+    }
+    locationResultSet.read(id)
+    .then(ref => {
+        if(!(ref && ref.locations)) {
+            return response.status(500).send('Unknown error getting `locationResultSet`');
+        }
+
+        return response.end(JSON.stringify(ref));
+    });
+});
+
 app.post('/locations', (request, response) => {
     if(!request.body.locations || request.body.locations.length < 2) {
         return response.status(400).send('`locations` endpoint requires `locations` data array size to be greater than 1');
     }
 
-    geocoder.batchGeocode(request.body.locations).then(function(geocodedLocations) {
-        const usableLocations = geocodedLocations.filter(geocoder.isAddressGeocoded);
+    locationResultSet.create({'locations': JSON.stringify(request.body.locations)})
+    .then(ref => {
+        if(!(ref && ref.id)) {
+            return response.status(500).send('Unknown error creating `locationResultSet`');
+        }
 
-        const accepted = usableLocations.map(loc => {
-            const { closestPoint, distance } = geocoder.getClosestPoint(loc, usableLocations);
-            return {
-                target: loc.value[0].formattedAddress,
-                closestPoint: closestPoint.value[0].formattedAddress,
-                distance
-            };
-        });
-
-        response.end(JSON.stringify({accepted, rejected: geocodedLocations.length - usableLocations.length}));
+        geocoder.offlineProcess(ref.id);
+        return response.end(JSON.stringify({'locationResultSet.id': ref.id}));
     });
 });
 

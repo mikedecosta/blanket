@@ -29,6 +29,7 @@
     "cover": "nyc --cache npm test; nyc report --reporter=html"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^2.2.9",
     "express": "^4.16.4",
     "node-geocoder": "^3.23.0"
   },
