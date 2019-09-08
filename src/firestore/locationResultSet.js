@@ -4,10 +4,7 @@ const APPCONFIG = require('./../../app-config');
 const COLLECTION = 'locationResultSet';
 const Firestore = require('@google-cloud/firestore');
 
-const db = new Firestore({
-  projectId: APPCONFIG.GOOGLE_PROJECT_ID,
-  keyFilename: APPCONFIG.GOOGLE_APPLICATION_CREDENTIALS,
-});
+const db = new Firestore();
 
 const create = function(doc) {
     delete doc.id;
