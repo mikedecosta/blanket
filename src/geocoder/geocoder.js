@@ -19,7 +19,7 @@ const batchGeocode = function (locations) {
     });
 };
 
-const offlineProcess = function(referenceId) {
+const offlineProcess = function (referenceId) {
     locationResultSet.read(referenceId)
     .then(ref => {
         if(!(ref && ref.locations)) {
@@ -75,7 +75,7 @@ const getClosestPoint = function (target, locations) {
     };
 };
 
-const isAddressGeocoded = function(address) {
+const isAddressGeocoded = function (address) {
     return !address.error &&
             address.hasOwnProperty('value') &&
             Array.isArray(address.value) &&
@@ -86,7 +86,7 @@ const isAddressGeocoded = function(address) {
             address.value[0].hasOwnProperty('longitude')
 };
 
-const calculateDistance = function(locationA, locationB, unit) {
+const calculateDistance = function (locationA, locationB, unit) {
     const radiusLatitudeA = Math.PI * locationA.latitude/180;
     const radiusLatitudeB = Math.PI * locationB.latitude/180;
     const theta = locationA.longitude - locationB.longitude;

@@ -12,15 +12,7 @@
   "private": true,
   "cloud-repo-tools": {
     "requiresKeyFile": true,
-    "requiresProjectId": true,
-    "test": {
-      "app": {
-        "args": [
-          "test/test.js"
-        ],
-        "msg": "Hello, world!"
-      }
-    }
+    "requiresProjectId": true
   },
   "scripts": {
     "start": "node src/app.js",
