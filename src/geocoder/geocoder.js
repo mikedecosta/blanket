@@ -31,7 +31,7 @@ module.exports.getClosestPoint = function (target, locations) {
             continue;
         }
 
-        const distance = calculateDistance(target.value[0], loc.value[0], DISTANCE_UNIT);
+        const distance = this.calculateDistance(target.value[0], loc.value[0], DISTANCE_UNIT);
         if(!closestPoint || distance < closestPointDistance) {
             closestPoint = loc;
             closestPointDistance = distance;
@@ -55,7 +55,7 @@ module.exports.isAddressGeocoded = function(address) {
             address.value[0].hasOwnProperty('longitude')
 }
 
-function calculateDistance(locationA, locationB, unit) {
+module.exports.calculateDistance = function(locationA, locationB, unit) {
     const radiusLatitudeA = Math.PI * locationA.latitude/180;
     const radiusLatitudeB = Math.PI * locationB.latitude/180;
     const theta = locationA.longitude - locationB.longitude;
@@ -70,7 +70,7 @@ function calculateDistance(locationA, locationB, unit) {
     distance = distance * 180/Math.PI;
     distance = distance * 60 * 1.1515;
 
-    if (unit==='km') { distance = dist * 1.609344 }
+    if (unit==='km') { distance = distance * 1.609344 }
 
     return distance;
 }
